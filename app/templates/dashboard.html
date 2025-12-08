@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Καλωσήρθες, {{ current_user.name }}!</h2>
+
+<!-- Φόρμα δημιουργίας νέας εργασίας -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">Νέα Εργασία</div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.deadline.label(class="form-label") }}
+                {{ form.deadline(class="form-control") }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form.completed(class="form-check-input") }}
+                {{ form.completed.label(class="form-check-label") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.file.label(class="form-label") }}
+                {{ form.file(class="form-control") }}
+            </div>
+
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Λίστα εργασιών -->
+<h4 class="mb-3">Οι εργασίες μου</h4>
+{% if tasks %}
+    <div class="list-group">
+        {% for task in tasks %}
+            <div class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">{{ task.title }}</div>
+                    <small class="text-muted">
+                        {{ task.deadline.strftime('%d/%m/%Y') if task.deadline else 'Χωρίς προθεσμία' }}
+                    </small><br>
+                    <span>{{ task.description }}</span><br>
+
+                    {% if task.file %}
+                        <a href="{{ url_for('main.download_file', filename=task.file) }}" class="btn btn-sm btn-outline-primary mt-2">
+                            📎 Λήψη αρχείου
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ url_for('main.edit_task', task_id=task.id) }}" class="btn btn-sm btn-outline-secondary mt-2">
+                        ✏️ Επεξεργασία
+                    </a>
+                </div>
+
+                {% if task.completed %}
+                    <span class="badge bg-success rounded-pill">Ολοκληρώθηκε</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark rounded-pill">Σε εκκρεμότητα</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted">Δεν έχεις ακόμα καταχωρήσει εργασίες.</p>
+{% endif %}
+{% endblock %}

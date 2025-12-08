@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Αρχική{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-4">Καλώς ήρθες στον Task Manager!</h1>
+    <p class="lead">Οργάνωσε τις εργασίες σου με deadlines και προσωπικό πίνακα ελέγχου.</p>
+    <a href="{{ url_for('main.register') }}" class="btn btn-primary btn-lg">Ξεκίνα τώρα</a>
+</div>
+{% endblock %}

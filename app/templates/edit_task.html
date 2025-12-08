@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Επεξεργασία Εργασίας{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Επεξεργασία Εργασίας</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.deadline.label(class="form-label") }}
+        {{ form.deadline(class="form-control") }}
+    </div>
+
+    <div class="mb-3 form-check">
+        {{ form.completed(class="form-check-input") }}
+        {{ form.completed.label(class="form-check-label") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.file.label(class="form-label") }}
+        {{ form.file(class="form-control") }}
+        {% if task.file %}
+            <p class="mt-2">Υπάρχον αρχείο: 
+                <a href="{{ url_for('main.download_file', filename=task.file) }}" target="_blank">
+                    {{ task.file }}
+                </a>
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="d-grid">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+{% endblock %}
